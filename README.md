@@ -1,4 +1,4 @@
-# 🛡️ NetDefender - **The Web Wasn’t Built for Safety — But We Are.**
+# 🛡️ NetDefender: **The Web Wasn’t Built for Safety — But We Are.**
 
 ![Dashboard Screenshot](./Images/Dashboard.png)
 
