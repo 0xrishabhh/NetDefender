@@ -1,4 +1,4 @@
-# 🛡️ NetDefender - **The Web Wasn’t Built for Safety — We Are.**
+# 🛡️ NetDefender - **Web Wasn’t Built for Safety — We Are.**
 
 ![Dashboard Screenshot](./Images/Dashboard.png)
 
@@ -11,21 +11,33 @@ With end-to-end encryption, secure file sharing, and breach monitoring via the H
 
 - 🛡 **Real-Time Antivirus Scanning**  
   Scan files and folders using the open-source **ClamAV** engine to detect and eliminate malware threats instantly.
+  
+  <img src="Images/Antivirus.png" alt="NetDefender UI" width="650" height="350"/>
 
 - 🤖 **AI-Powered Security Bot**  
   An intelligent **Gemini-powered chatbot** that assists users by identifying suspicious behavior, answering security-related queries, and guiding them through threat analysis.
+  
+  <img src="Images/Chatbot.png" alt="NetDefender UI" width="650" height="350"/>
 
 - 🔐 **File Encryption & Decryption with Secure Sharing**  
   Protect your data with **end-to-end encryption and decryption**, and securely share files via **WhatsApp** and **Email**, including automatic key transfer for secure delivery.
+  
+  <img src="Images/Antivirus.png" alt="NetDefender UI" width="650" height="350"/>
 
 - 🕵️ **Data Breach Monitoring**  
   Stay informed with real-time alerts using the **Have I Been Pwned API** to detect if your credentials have been compromised in known breaches.
+  
+  <img src="Images/Have I Been Pwned.png" alt="NetDefender UI" width="650" height="350"/>
 
 - 🔗 **Phishing & URL Scanner**  
   Automatically scan URLs to detect phishing attempts and malicious links, enhancing your browsing safety.
+  
+  <img src="Images/PhishGuard.png" alt="NetDefender UI" width="650" height="350"/>
 
-- 📦 **Easy Deployment & Intuitive UI**  
-  Simple setup process with a clean, user-friendly interface—ideal for both beginners and professionals.
+- 🌐 **Network Port Scanner**  
+  Scan open ports on target hosts to identify running services and potential vulnerabilities in real time.
+  
+  <img src="Images/PortScanner.png" alt="NetDefender UI" width="650" height="350"/>
 
 ## 🧰 Tech Stack
 
