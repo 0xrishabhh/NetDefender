@@ -1,4 +1,4 @@
-# 🛡️ NetDefender - **Web Wasn’t Built for Safety — We Are.**
+# 🛡️ NetDefender - **The Web Wasn’t Built for Safety — But We Are.**
 
 ![Dashboard Screenshot](./Images/Dashboard.png)
 
@@ -22,7 +22,13 @@ With end-to-end encryption, secure file sharing, and breach monitoring via the H
 - 🔐 **File Encryption & Decryption with Secure Sharing**  
   Protect your data with **end-to-end encryption and decryption**, and securely share files via **WhatsApp** and **Email**, including automatic key transfer for secure delivery.
   
-  <img src="Images/Antivirus.png" alt="NetDefender UI" width="650" height="350"/>
+  <table>
+  <tr>
+    <td><img src="Images/Encryption.png" width="700"/></td>
+    <td><img src="Images/Decryption.png" width="700" /></td>
+  </tr>
+</table>
+
 
 - 🕵️ **Data Breach Monitoring**  
   Stay informed with real-time alerts using the **Have I Been Pwned API** to detect if your credentials have been compromised in known breaches.
