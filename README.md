@@ -1,6 +1,6 @@
-# 🛡️ NetDefender
+# 🛡️ NetDefender - **The Web Wasn’t Built for Safety — We Are.**
 
-**The Web Wasn’t Built for Safety — We Are.**
+![Dashboard Screenshot](./Images/Dashboard.png)
 
 NetDefender is a web-based cybersecurity platform that offers real-time protection against online threats. It features advanced file, folder, and URL scanning with AI-powered malware detection via Gemini and integrated antivirus support through ClamAV.
 
