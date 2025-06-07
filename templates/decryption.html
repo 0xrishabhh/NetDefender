@@ -1,0 +1,543 @@
+{% extends "base.html" %}
+
+{% block title %}File Decryption - Cybersecurity Platform{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="hero-section">
+        <h1>File Decryption</h1>
+        <p class="hero-subtitle">Securely decrypt your files using your encryption key</p>
+    </div>
+
+    <div class="decryption-content">
+        <div class="info-section">
+            <div class="info-card">
+                <h2>How to Decrypt Files</h2>
+                <ol class="steps-list">
+                    <li>
+                        <span class="step-number">1</span>
+                        <span class="step-text">Select your encrypted file</span>
+                    </li>
+                    <li>
+                        <span class="step-number">2</span>
+                        <span class="step-text">Enter your decryption key</span>
+                    </li>
+                    <li>
+                        <span class="step-number">3</span>
+                        <span class="step-text">Click "Decrypt File" to process</span>
+                    </li>
+                    <li>
+                        <span class="step-number">4</span>
+                        <span class="step-text">Download your original file</span>
+                    </li>
+                </ol>
+                <div class="info-note">
+                    <i class="fas fa-info-circle"></i>
+                    <p>Make sure you have the correct decryption key that was provided during encryption.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="upload-section">
+            <form id="decryptForm" action="{{ url_for('decryption') }}" method="POST" enctype="multipart/form-data">
+                <div class="upload-card">
+                    <div class="file-upload">
+                        <label for="file">
+                            <div class="upload-area" id="fileArea">
+                                <i class="fas fa-file-upload"></i>
+                                <span class="upload-text">Upload Encrypted File</span>
+                                <span class="file-name" id="fileName">No file selected</span>
+                            </div>
+                        </label>
+                        <input type="file" id="file" name="file" required>
+                    </div>
+
+                    <div class="key-input">
+                        <label for="decryption-key">Decryption Key:</label>
+                        <input type="text" id="decryption-key" name="key" class="form-control" placeholder="Enter your decryption key" required>
+                        <p class="input-help">Enter the key exactly as it was provided during encryption</p>
+                    </div>
+
+                    <div class="algorithm-selection">
+                        <label for="algorithm">Encryption Algorithm:</label>
+                        <select id="algorithm" name="algorithm" class="form-select" required>
+                            <option value="AES-256">AES-256</option>
+                            <option value="TripleDES">TripleDES</option>
+                        </select>
+                        <p class="input-help">Select the algorithm used for encryption</p>
+                    </div>
+
+                    <button type="submit" class="decrypt-btn">
+                        <i class="fas fa-unlock"></i>
+                        Decrypt File
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div id="error-message" class="alert alert-danger" style="display: none;"></div>
+
+        <div id="result" class="result-section" style="display: none;">
+            <div class="result-card">
+                <div class="result-header">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Decryption Successful</h3>
+                </div>
+                <div class="result-content">
+                    <div class="file-info">
+                        <h4>Original File Details</h4>
+                        <p>File name: <span id="originalFileName"></span></p>
+                        <p>File size: <span id="originalFileSize"></span></p>
+                    </div>
+                    <a href="#" id="downloadLink" class="download-btn">
+                        <i class="fas fa-download"></i>
+                        Download Decrypted File
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.container {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: var(--section-padding);
+}
+
+.hero-section {
+    text-align: center;
+    padding: 4rem 0;
+    margin-bottom: 4rem;
+    background: var(--gray-100);
+    border-radius: 16px;
+    border: 1px solid var(--gray-200);
+}
+
+.hero-section h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    letter-spacing: -1px;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--gray-600);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.decryption-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    align-items: start;
+}
+
+.info-card, .upload-card {
+    background: var(--gray-100);
+    border-radius: 16px;
+    padding: 2rem;
+    border: 1px solid var(--gray-200);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.info-card h2 {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--gray-200);
+}
+
+.steps-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.steps-list li {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background: var(--gray-100);
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    transition: transform 0.2s ease;
+}
+
+.steps-list li:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.step-number {
+    min-width: 32px;
+    height: 32px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    font-weight: 600;
+}
+
+.step-text {
+    color: var(--gray-700);
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.info-note {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: var(--warning-bg);
+    border-left: 4px solid var(--warning-color);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.info-note i {
+    color: var(--warning-color);
+    font-size: 1.2rem;
+}
+
+.info-note p {
+    margin: 0;
+    color: var(--warning-text);
+    font-size: 0.95rem;
+}
+
+.upload-area {
+    border: 2px dashed var(--gray-300);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 1.5rem;
+    background: var(--gray-100);
+}
+
+.upload-area:hover {
+    border-color: var(--primary-color);
+    background: var(--gray-200);
+}
+
+.upload-area i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.upload-text {
+    display: block;
+    color: var(--gray-700);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.file-name {
+    color: var(--gray-600);
+    font-size: 0.9rem;
+}
+
+.key-input {
+    margin-bottom: 1.5rem;
+}
+
+.key-input label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--gray-700);
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--gray-300);
+    border-radius: 8px;
+    background-color: var(--gray-100);
+    color: var(--gray-700);
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+    outline: none;
+}
+
+.input-help {
+    margin-top: 0.5rem;
+    color: var(--gray-600);
+    font-size: 0.9rem;
+}
+
+.algorithm-selection {
+    margin-bottom: 1.5rem;
+}
+
+.algorithm-selection label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--gray-700);
+    font-weight: 500;
+}
+
+.form-select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--gray-300);
+    border-radius: 8px;
+    background-color: var(--gray-100);
+    color: var(--gray-700);
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+    outline: none;
+}
+
+.decrypt-btn {
+    width: 100%;
+    padding: 1rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.decrypt-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.alert-danger {
+    background-color: var(--danger-bg);
+    color: var(--danger-color);
+    border: 1px solid var(--danger-color);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.result-section {
+    margin-top: 2rem;
+}
+
+.result-card {
+    background: var(--gray-100);
+    padding: 2rem;
+    border-radius: 16px;
+    border: 1px solid var(--gray-200);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.result-header {
+    margin-bottom: 2rem;
+}
+
+.result-header i {
+    font-size: 3rem;
+    color: var(--success-color);
+    margin-bottom: 1rem;
+}
+
+.result-header h3 {
+    color: var(--primary-color);
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.file-info {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: var(--gray-200);
+    border-radius: 12px;
+}
+
+.file-info h4 {
+    color: var(--gray-700);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.file-info p {
+    margin: 0.5rem 0;
+    color: var(--gray-600);
+    font-size: 0.95rem;
+}
+
+.download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    background: var(--success-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.download-btn:hover {
+    background: var(--success-dark);
+    transform: translateY(-2px);
+}
+
+/* Dark mode styles */
+[data-bs-theme="dark"] .hero-section,
+[data-bs-theme="dark"] .info-card,
+[data-bs-theme="dark"] .upload-card,
+[data-bs-theme="dark"] .result-card {
+    background: var(--dark-card-bg);
+    border-color: var(--dark-border);
+}
+
+[data-bs-theme="dark"] .hero-section h1,
+[data-bs-theme="dark"] .info-card h2,
+[data-bs-theme="dark"] .result-header h3 {
+    color: var(--light-color);
+}
+
+[data-bs-theme="dark"] .hero-subtitle,
+[data-bs-theme="dark"] .step-text,
+[data-bs-theme="dark"] .upload-text,
+[data-bs-theme="dark"] .algorithm-selection label,
+[data-bs-theme="dark"] .key-input label,
+[data-bs-theme="dark"] .file-info h4 {
+    color: var(--dark-text-secondary);
+}
+
+[data-bs-theme="dark"] .steps-list li,
+[data-bs-theme="dark"] .upload-area,
+[data-bs-theme="dark"] .form-control,
+[data-bs-theme="dark"] .form-select,
+[data-bs-theme="dark"] .file-info {
+    background: var(--dark-input-bg);
+    border-color: var(--dark-border);
+}
+
+[data-bs-theme="dark"] .file-info p {
+    color: var(--dark-text-secondary);
+}
+
+/* Responsive styles */
+@media (max-width: 992px) {
+    .decryption-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .hero-section {
+        padding: 2rem 1rem;
+    }
+    
+    .info-card, .upload-card, .result-card {
+        padding: 1.5rem;
+    }
+    
+    .upload-area {
+        padding: 1.5rem;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.getElementById('file');
+    const fileName = document.getElementById('fileName');
+    const decryptForm = document.getElementById('decryptForm');
+    const resultSection = document.getElementById('result');
+    const errorMessage = document.getElementById('error-message');
+
+    // Update file name display when file is selected
+    fileInput.addEventListener('change', function() {
+        fileName.textContent = this.files[0] ? this.files[0].name : 'No file selected';
+    });
+
+    // Handle form submission
+    decryptForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Hide previous results/errors
+        resultSection.style.display = 'none';
+        errorMessage.style.display = 'none';
+        
+        const formData = new FormData(this);
+        
+        fetch(this.action, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Display file details
+                document.getElementById('originalFileName').textContent = data.original_filename;
+                document.getElementById('originalFileSize').textContent = formatFileSize(data.file_size);
+                
+                // Set up download link
+                const downloadLink = document.getElementById('downloadLink');
+                downloadLink.href = data.file_url;
+                downloadLink.download = 'decrypted_' + data.original_filename;
+                
+                // Show result section
+                resultSection.style.display = 'block';
+                resultSection.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                throw new Error(data.error || 'Decryption failed');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            errorMessage.textContent = error.message || 'An error occurred during decryption. Please check your key and try again.';
+            errorMessage.style.display = 'block';
+            errorMessage.scrollIntoView({ behavior: 'smooth' });
+        });
+    });
+    
+    // Helper function to format file size
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}AI Assistant - NetDefender{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="cyber-container">
+        <div class="glitch-container">
+            <div class="cyber-lines"></div>
+            <h1 class="glitch" data-text="CYBERCHAT AI">CYBERCHAT AI</h1>
+            <div class="cyber-subtitle">SECURE AI INTERFACE v1.0</div>
+        </div>
+        
+        <div class="terminal-container">
+            <div class="terminal-header">
+                <div class="terminal-buttons">
+                    <span class="terminal-button close"></span>
+                    <span class="terminal-button minimize"></span>
+                    <span class="terminal-button maximize"></span>
+                </div>
+                <div class="terminal-title">cyberchat@system:~#</div>
+            </div>
+            
+            <div id="chat-messages" class="terminal-body">
+                <div class="space-y-4">
+                    <div class="message bot-message">
+                        <span class="prompt">system@cyberchat:~$</span>
+                        <span class="message-text">Welcome to CyberChat AI. How can I assist you with cybersecurity today?</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="terminal-input">
+                <form id="chat-form" autocomplete="off">
+                    <span class="prompt">user@cyberchat:~$</span>
+                    <input type="text" 
+                           id="user-input" 
+                           name="user-input"
+                           placeholder="Enter your command..."
+                           autocomplete="off"
+                           spellcheck="false"
+                           required>
+                    <button type="submit" aria-label="Send message">
+                        <i class="fas fa-terminal"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+{% endblock %} 

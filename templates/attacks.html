@@ -1,0 +1,272 @@
+{% extends "base.html" %}
+
+{% block title %}Types of Cyberattacks - Cybersecurity Platform{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="hero-section">
+        <h1>Types of Cyberattacks</h1>
+        <p class="hero-subtitle">Learn about common attacks and how to protect yourself</p>
+    </div>
+
+    <div class="attacks-grid">
+        <!-- Phishing Section -->
+        <div class="attack-card">
+            <div class="attack-icon">🎣</div>
+            <div class="attack-content">
+                <h2>Phishing Attacks</h2>
+                <p class="description">Deceptive attempts to steal sensitive information by posing as legitimate entities.</p>
+                <div class="details">
+                    <h3>Common Types:</h3>
+                    <ul>
+                        <li>Email phishing - Fake emails claiming to be from legitimate companies</li>
+                        <li>Spear phishing - Targeted attacks on specific individuals or organizations</li>
+                        <li>Whaling - Attacks targeting high-level executives</li>
+                        <li>Vishing - Voice phishing through phone calls</li>
+                        <li>Smishing - SMS-based phishing attacks</li>
+                    </ul>
+                    <h3>How to Protect Yourself:</h3>
+                    <ul>
+                        <li>Verify sender email addresses carefully</li>
+                        <li>Don't click on suspicious links</li>
+                        <li>Check for spelling and grammar errors</li>
+                        <li>Never share sensitive information via email</li>
+                        <li>Use multi-factor authentication</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Malware Section -->
+        <div class="attack-card">
+            <div class="attack-icon">🦠</div>
+            <div class="attack-content">
+                <h2>Malware</h2>
+                <p class="description">Malicious software designed to damage or gain unauthorized access to systems.</p>
+                <div class="details">
+                    <h3>Types of Malware:</h3>
+                    <ul>
+                        <li>Viruses - Self-replicating malicious code</li>
+                        <li>Trojans - Malware disguised as legitimate software</li>
+                        <li>Ransomware - Encrypts files and demands payment</li>
+                        <li>Spyware - Monitors user activity secretly</li>
+                        <li>Worms - Self-propagating across networks</li>
+                    </ul>
+                    <h3>Prevention Methods:</h3>
+                    <ul>
+                        <li>Keep software and systems updated</li>
+                        <li>Use reliable antivirus software</li>
+                        <li>Don't download from untrusted sources</li>
+                        <li>Regular system scans</li>
+                        <li>Backup important data regularly</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Engineering -->
+        <div class="attack-card">
+            <div class="attack-icon">👥</div>
+            <div class="attack-content">
+                <h2>Social Engineering</h2>
+                <p class="description">Psychological manipulation to trick users into revealing information.</p>
+                <div class="details">
+                    <h3>Common Techniques:</h3>
+                    <ul>
+                        <li>Pretexting - Creating false scenarios</li>
+                        <li>Baiting - Offering something enticing</li>
+                        <li>Quid pro quo - Promising a benefit in exchange</li>
+                        <li>Tailgating - Following authorized personnel</li>
+                        <li>Impersonation - Pretending to be someone else</li>
+                    </ul>
+                    <h3>Defense Strategies:</h3>
+                    <ul>
+                        <li>Verify identities independently</li>
+                        <li>Be skeptical of unsolicited contact</li>
+                        <li>Never share passwords or sensitive data</li>
+                        <li>Report suspicious activities</li>
+                        <li>Follow security policies strictly</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- DDoS Attacks -->
+        <div class="attack-card">
+            <div class="attack-icon">🌊</div>
+            <div class="attack-content">
+                <h2>DDoS Attacks</h2>
+                <p class="description">Overwhelming systems with traffic to make them unavailable.</p>
+                <div class="details">
+                    <h3>Attack Methods:</h3>
+                    <ul>
+                        <li>Volume-based attacks</li>
+                        <li>Protocol attacks</li>
+                        <li>Application layer attacks</li>
+                        <li>Amplification attacks</li>
+                        <li>Botnet-driven attacks</li>
+                    </ul>
+                    <h3>Protection Measures:</h3>
+                    <ul>
+                        <li>Use DDoS mitigation services</li>
+                        <li>Implement traffic filtering</li>
+                        <li>Scale bandwidth capacity</li>
+                        <li>Monitor traffic patterns</li>
+                        <li>Have incident response plans</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.container {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: var(--section-padding);
+}
+
+.hero-section {
+    text-align: center;
+    padding: 4rem 0;
+    margin-bottom: 4rem;
+    background: var(--gray-100);
+    border-radius: 16px;
+    border: 1px solid var(--gray-200);
+}
+
+.hero-section h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    letter-spacing: -1px;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--gray-600);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.attacks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 2rem;
+}
+
+.attack-card {
+    background: var(--gray-100);
+    border: 1px solid var(--gray-200);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+}
+
+.attack-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    border-color: var(--primary-color);
+}
+
+.attack-icon {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    opacity: 0.9;
+}
+
+.attack-content h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.description {
+    font-size: 1.1rem;
+    color: var(--gray-700);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.details h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 2rem 0 1rem;
+}
+
+.details ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.details li {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+    position: relative;
+    color: var(--gray-700);
+    line-height: 1.5;
+}
+
+.details li::before {
+    content: "•";
+    color: var(--primary-color);
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+/* Dark mode styles */
+[data-bs-theme="dark"] .hero-section,
+[data-bs-theme="dark"] .attack-card {
+    background: var(--dark-card-bg);
+    border-color: var(--dark-border);
+}
+
+[data-bs-theme="dark"] .hero-section h1,
+[data-bs-theme="dark"] .attack-content h2,
+[data-bs-theme="dark"] .details h3 {
+    color: var(--light-color);
+}
+
+[data-bs-theme="dark"] .hero-subtitle,
+[data-bs-theme="dark"] .description,
+[data-bs-theme="dark"] .details li {
+    color: var(--dark-text-secondary);
+}
+
+/* Responsive styles */
+@media (max-width: 992px) {
+    .attacks-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .hero-section {
+        padding: 2rem 1rem;
+    }
+    
+    .attack-card {
+        padding: 1.5rem;
+    }
+    
+    .attack-content h2 {
+        font-size: 1.75rem;
+    }
+    
+    .description {
+        font-size: 1rem;
+    }
+}
+</style>
+{% endblock %}

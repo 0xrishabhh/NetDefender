@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}NetDefender{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
+    <meta name="description" content="Protect your digital life with NetDefender's advanced cybersecurity tools and resources">
+    <meta name="keywords" content="cybersecurity, password checker, encryption, decryption, security awareness, phishing protection">
+    <style>
+        /* Add light mode variables and update dark mode handling */
+        :root {
+            /* Light mode colors */
+            --primary-color-light: #008f5d;
+            --secondary-color-light: #cc00cc;
+            --accent-color-light: #00cccc;
+            --bg-light: #ffffff;
+            --text-light: #333333;
+            --border-light: rgba(0, 143, 93, 0.2);
+            --glow-light: 0 0 5px rgba(0, 143, 93, 0.5);
+
+            /* Dark mode colors (current neon theme) */
+            --primary-color-dark: #00ff9d;
+            --secondary-color-dark: #ff00ff;
+            --accent-color-dark: #00ffff;
+            --bg-dark: #0a0a0a;
+            --text-dark: #00ff9d;
+            --border-dark: rgba(0, 255, 157, 0.2);
+            --glow-dark: 0 0 10px var(--primary-color-dark);
+
+            /* Default to dark mode */
+            --primary-color: var(--primary-color-dark);
+            --secondary-color: var(--secondary-color-dark);
+            --accent-color: var(--accent-color-dark);
+            --bg-color: var(--bg-dark);
+            --text-color: var(--text-dark);
+            --border-color: var(--border-dark);
+            --glow: var(--glow-dark);
+        }
+
+        /* Light mode styles */
+        [data-bs-theme="light"] {
+            --primary-color: var(--primary-color-light);
+            --secondary-color: var(--secondary-color-light);
+            --accent-color: var(--accent-color-light);
+            --bg-color: var(--bg-light);
+            --text-color: var(--text-light);
+            --border-color: var(--border-light);
+            --glow: var(--glow-light);
+        }
+
+        /* Update body styles */
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(45deg, transparent 48%, var(--text-color) 49%, transparent 51%),
+                linear-gradient(-45deg, transparent 48%, var(--text-color) 49%, transparent 51%);
+            background-size: 60px 60px;
+            opacity: 0.05;
+            pointer-events: none;
+        }
+        
+        /* Header styles */
+        .navbar {
+            background: var(--bg-color);
+            padding: 0.7rem 0;
+            border-bottom: 2px solid var(--primary-color);
+            box-shadow: var(--glow);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1000;
+        }
+        
+        .navbar-brand {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-color) !important;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: var(--glow);
+            display: flex;
+            align-items: center;
+            margin-right: 1.5rem;
+        }
+        
+        .navbar-brand i {
+            margin-right: 8px;
+            color: var(--secondary-color);
+            text-shadow: 0 0 10px var(--secondary-color);
+            font-size: 1.2rem;
+        }
+        
+        .navbar .container {
+            max-width: 100%;
+            padding: 0 0.5rem;
+        }
+        
+        .navbar-collapse {
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+        
+        .navbar-nav {
+            flex-wrap: nowrap;
+            align-items: center;
+        }
+        
+        .nav-item {
+            margin: 0 0.3rem;
+        }
+        
+        .nav-item .nav-link {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 0.5rem 0.6rem !important;
+            position: relative;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            text-shadow: var(--glow);
+        }
+        
+        .nav-item .nav-link:hover {
+            color: var(--secondary-color);
+            text-shadow: var(--glow);
+        }
+        
+        .nav-item .nav-link.active {
+            color: var(--secondary-color);
+            font-weight: 600;
+            text-shadow: var(--glow);
+        }
+        
+        .nav-item .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--text-color);
+            transform: scale(0.8);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item .nav-link:hover::before,
+        .nav-item .nav-link.active::before {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        /* Dropdown styles */
+        .dropdown {
+            position: relative;
+            z-index: 1001;
+        }
+        
+        .dropdown-menu {
+            background: var(--bg-color);
+            border: 1px solid var(--primary-color);
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem;
+            min-width: 220px;
+            margin-top: 0.5rem;
+            animation: dropdownFade 0.3s ease;
+            z-index: 1002;
+            position: absolute;
+        }
+
+        @keyframes dropdownFade {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 20px;
+            width: 10px;
+            height: 10px;
+            background: var(--bg-color);
+            border-top: 1px solid var(--text-color);
+            border-left: 1px solid var(--text-color);
+            transform: rotate(45deg);
+        }
+
+        .dropdown-divider {
+            border-color: var(--text-color);
+            opacity: 0.2;
+            margin: 0.5rem 0;
+        }
+        
+        .dropdown-item {
+            color: var(--text-color);
+            padding: 0.7rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-shadow: var(--glow);
+        }
+        
+        .dropdown-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-item:hover, .dropdown-item:focus {
+            background: rgba(255, 0, 255, 0.1);
+            color: var(--secondary-color);
+            text-shadow: var(--glow);
+            padding-left: 1.5rem;
+        }
+
+        .dropdown-item:hover i {
+            color: var(--secondary-color);
+            transform: scale(1.2);
+        }
+        
+        .dropdown-item.active, .dropdown-item:active {
+            background: rgba(0, 255, 157, 0.2);
+            color: var(--text-color);
+            text-shadow: 0 0 5px var(--text-color);
+        }
+        
+        .dropdown-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: var(--text-color);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .dropdown-item:hover::before, .dropdown-item.active::before {
+            transform: scaleY(1);
+        }
+
+        /* Ensure dropdown works on mobile */
+        @media (max-width: 768px) {
+            .dropdown-menu {
+                background: rgba(10, 10, 10, 0.98);
+                border: none;
+                box-shadow: none;
+                padding: 0;
+                margin-top: 0;
+                border-left: 2px solid var(--text-color);
+            }
+
+            .dropdown-menu::before {
+                display: none;
+            }
+
+            .dropdown-item {
+                padding: 0.8rem 1rem;
+                border-radius: 0;
+            }
+
+            .dropdown-divider {
+                margin: 0;
+            }
+        }
+        
+        .welcome-msg {
+            color: var(--primary-color) !important;
+            font-weight: 500;
+            text-shadow: var(--glow);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 180px;
+            margin-right: 1rem !important;
+        }
+        
+        /* Button styles */
+        .btn {
+            font-family: 'Share Tech Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid var(--primary-color);
+            background: transparent;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            text-shadow: var(--glow);
+            box-shadow: 0 0 5px var(--primary-color);
+        }
+        
+        .btn:hover {
+            background: var(--primary-color);
+            color: var(--bg-color);
+            border-color: var(--secondary-color);
+            box-shadow: var(--glow);
+        }
+        
+        /* Main content area */
+        .container.mt-4 {
+            flex: 1;
+            position: relative;
+        }
+        
+        /* Footer styles */
+        footer {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 3rem 0 1.5rem;
+            margin-top: 3rem;
+            border-top: 2px solid var(--primary-color);
+            position: relative;
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 48%, var(--text-color) 49%, transparent 51%);
+            background-size: 30px 30px;
+            opacity: 0.05;
+            pointer-events: none;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2.5rem;
+            align-items: flex-start;
+            padding: 2rem 0 0 0;
+        }
+        
+        .footer-info img {
+            filter: drop-shadow(0 0 8px var(--primary-color));
+        }
+        
+        .footer-links h4 {
+            margin-bottom: 1rem;
+        }
+        
+        .quick-links-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .quick-links-row a {
+            display: inline-flex;
+            align-items: center;
+            background: var(--bg-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 20px;
+            padding: 0.35rem 1.1rem;
+            color: var(--primary-color);
+            font-weight: 500;
+            font-size: 1rem;
+            text-shadow: var(--glow);
+            transition: background 0.2s, color 0.2s, border 0.2s;
+            box-shadow: 0 0 6px var(--primary-color), 0 2px 8px rgba(0,0,0,0.04);
+            margin-bottom: 0.2rem;
+            margin-right: 0.3rem;
+            text-decoration: none;
+        }
+        
+        .quick-links-row a:last-child {
+            margin-right: 0;
+        }
+        
+        .quick-links-row a:hover {
+            background: var(--primary-color);
+            color: var(--bg-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .footer-contact .social-links a {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-right: 0.7rem;
+            transition: color 0.2s;
+        }
+        
+        .footer-contact .social-links a:hover {
+            color: var(--secondary-color);
+        }
+        
+        .footer-bottom {
+            border-top: 1.5px solid var(--primary-color);
+            margin-top: 2.5rem;
+            padding-top: 1rem;
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 1rem;
+            opacity: 0.85;
+        }
+        
+        /* Right side navbar items */
+        .d-flex.align-items-center {
+            gap: 0.5rem;
+            flex-wrap: nowrap;
+            align-items: center;
+        }
+        
+        /* Responsive adjustments */
+        @media (min-width: 992px) and (max-width: 1200px) {
+            .navbar-nav .nav-link {
+                padding: 0.5rem 0.4rem !important;
+                font-size: 0.8rem;
+            }
+            
+            .welcome-msg {
+                max-width: 150px;
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .quick-links-row {
+                gap: 0.5rem;
+            }
+        }
+        
+        /* Glitch effect */
+        @keyframes glitch {
+            0% {
+                transform: translate(0);
+            }
+            20% {
+                transform: translate(-2px, 2px);
+            }
+            40% {
+                transform: translate(-2px, -2px);
+            }
+            60% {
+                transform: translate(2px, 2px);
+            }
+            80% {
+                transform: translate(2px, -2px);
+            }
+            100% {
+                transform: translate(0);
+            }
+        }
+        
+        .glitch {
+            animation: glitch 1s linear infinite;
+        }
+
+        /* Hero section z-index adjustment */
+        .hero-section {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .cyber-grid {
+            z-index: 1;
+        }
+
+        /* Update heading styles */
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--primary-color);
+            text-shadow: var(--glow);
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Update link styles */
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            text-shadow: var(--glow);
+        }
+
+        a:hover {
+            color: var(--secondary-color);
+            text-shadow: var(--glow);
+        }
+
+        /* Update button styles */
+        .btn {
+            border-color: var(--primary-color);
+            color: var(--text-color);
+            text-shadow: var(--glow);
+            box-shadow: 0 0 5px var(--primary-color);
+        }
+
+        .btn:hover {
+            background: var(--primary-color);
+            color: var(--bg-color);
+            border-color: var(--secondary-color);
+            box-shadow: var(--glow);
+        }
+
+        /* Update dropdown styles */
+        .dropdown-item {
+            color: var(--text-color);
+            text-shadow: var(--glow);
+        }
+
+        .dropdown-item:hover {
+            color: var(--secondary-color);
+            text-shadow: var(--glow);
+            background: rgba(255, 0, 255, 0.1);
+        }
+
+        /* Update welcome message */
+        .welcome-msg {
+            color: var(--primary-color) !important;
+            text-shadow: var(--glow);
+        }
+
+        /* Update footer styles */
+        .footer-info h4, 
+        .footer-links h4, 
+        .footer-contact h4 {
+            color: var(--primary-color);
+            text-shadow: var(--glow);
+        }
+
+        .footer-links ul li a {
+            color: var(--primary-color);
+            text-shadow: var(--glow);
+        }
+
+        .footer-links ul li a:hover {
+            color: var(--secondary-color);
+            text-shadow: var(--glow);
+        }
+
+        /* Add glowing text effect */
+        .glow-text {
+            color: var(--primary-color);
+            text-shadow: var(--glow);
+            animation: textGlow 2s infinite alternate;
+        }
+
+        @keyframes textGlow {
+            0% {
+                text-shadow: var(--glow);
+            }
+            50% {
+                text-shadow: var(--glow);
+            }
+            100% {
+                text-shadow: var(--glow);
+            }
+        }
+
+        /* Update alert styles */
+        .alert {
+            border-color: var(--primary-color);
+            color: var(--text-color);
+            text-shadow: var(--glow);
+            background: var(--bg-color);
+        }
+
+        .alert-success {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .alert-danger {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        /* Update form styles */
+        .form-control {
+            background: var(--bg-color);
+            border-color: var(--primary-color);
+            color: var(--text-color);
+        }
+
+        .form-control:focus {
+            background: var(--bg-color);
+            border-color: var(--secondary-color);
+            color: var(--text-color);
+        }
+
+        .btn-toggle-mode {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            border-radius: 0;
+            border: 2px solid var(--primary-color);
+            background: var(--bg-color);
+            color: var(--text-color);
+            padding: 0;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: background 0.2s, color 0.2s, border 0.2s;
+            box-shadow: 0 0 8px var(--primary-color);
+            height: 2.5rem;
+            width: 2.5rem;
+            min-width: 2.5rem;
+        }
+        .btn-toggle-mode i {
+            font-size: 1.5rem;
+            vertical-align: middle;
+            margin: 0;
+            color: #fff;
+            transition: color 0.2s;
+        }
+        [data-bs-theme="light"] .btn-toggle-mode i {
+            color: #222;
+        }
+        [data-bs-theme="dark"] .btn-toggle-mode i {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <i class="fas fa-shield-alt"></i> NetDefender
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    {% if current_user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {% if request.path == '/awareness' or request.path == '/dos-donts' or request.path == '/attacks' or request.path == '/ppt' %}active{% endif %}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-lightbulb"></i> Learn
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark">
+                                <li><a class="dropdown-item {% if request.path == '/awareness' %}active{% endif %}" href="{{ url_for('awareness') }}"><i class="fas fa-shield-alt"></i> Overview</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item {% if request.path == '/dos-donts' %}active{% endif %}" href="{{ url_for('dos_donts') }}"><i class="fas fa-check-circle"></i> Do's & Don'ts</a></li>
+                                <li><a class="dropdown-item {% if request.path == '/attacks' %}active{% endif %}" href="{{ url_for('attacks') }}"><i class="fas fa-exclamation-triangle"></i> Attacks</a></li>
+                                <li><a class="dropdown-item {% if request.path == '/ppt' %}active{% endif %}" href="{{ url_for('ppt') }}"><i class="fas fa-file-powerpoint"></i> Slides</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('awareness') }}#quiz-section">Security Quiz</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == '/phishing-protection' %}active{% endif %}" href="{{ url_for('phishing_protection') }}">
+                                <i class="fas fa-fish"></i> Anti-Phish
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == '/password_checker' %}active{% endif %}" href="{{ url_for('password_checker') }}">
+                                <i class="fas fa-key"></i> Passwords
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == '/haveibeenpwned' %}active{% endif %}" href="{{ url_for('haveibeenpwned') }}">
+                                <i class="fas fa-exclamation-triangle"></i> Pwned?
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {% if request.path == '/encryption' or request.path == '/decryption' %}active{% endif %}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-lock"></i> Crypto
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark">
+                                <li><a class="dropdown-item {% if request.path == '/encryption' %}active{% endif %}" href="{{ url_for('encryption') }}"><i class="fas fa-lock"></i> Encrypt</a></li>
+                                <li><a class="dropdown-item {% if request.path == '/decryption' %}active{% endif %}" href="{{ url_for('decryption') }}"><i class="fas fa-unlock"></i> Decrypt</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == '/port-scanner' %}active{% endif %}" href="{{ url_for('port_scanner') }}">
+                                <i class="fas fa-search"></i> Ports
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == '/scan-file' %}active{% endif %}" href="{{ url_for('scan_file_route') }}">
+                                <i class="fas fa-shield-virus"></i> Antivirus
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.endpoint == 'chatbot' %}active{% endif %}" href="{{ url_for('chatbot') }}">
+                                <i class="fas fa-robot"></i> AI Help
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+                <div class="d-flex align-items-center">
+                    <button id="darkModeToggle" class="btn btn-toggle-mode nav-link me-3" aria-label="Toggle dark/light mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    {% if current_user.is_authenticated %}
+                        <span class="welcome-msg nav-link me-3">
+                            <i class="fas fa-user-circle"></i> {{ current_user.email }}
+                        </span>
+                        <a href="{{ url_for('logout') }}" class="btn btn-outline-light">
+                            <i class="fas fa-sign-out-alt"></i> Exit
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}" class="btn btn-outline-light me-2">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </a>
+                        <a href="{{ url_for('signup') }}" class="btn btn-light">
+                            <i class="fas fa-user-plus"></i> Sign Up
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category if category != 'message' else 'info' }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <img src="{{ url_for('static', filename='images/logo-small.svg') }}" alt="NetDefender Logo" style="max-width: 60px; margin-bottom: 1rem;">
+                    <p style="font-size: 1.1rem; opacity: 0.85;">NetDefender provides comprehensive cybersecurity tools to protect your digital life from threats like phishing, malware, and unauthorized access.</p>
+                </div>
+                {% if current_user.is_authenticated %}
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <div class="quick-links-row">
+                        <a href="{{ url_for('index') }}">Home</a>
+                        <a href="{{ url_for('awareness') }}">Awareness Overview</a>
+                        <a href="{{ url_for('dos_donts') }}">Do's & Don'ts</a>
+                        <a href="{{ url_for('attacks') }}">Attacks</a>
+                        <a href="{{ url_for('ppt') }}">Presentation</a>
+                        <a href="{{ url_for('password_checker') }}">Password Checker</a>
+                        <a href="{{ url_for('haveibeenpwned') }}">Have I Been Pwned</a>
+                        <a href="{{ url_for('encryption') }}">Encryption</a>
+                        <a href="{{ url_for('decryption') }}">Decryption</a>
+                        <a href="{{ url_for('phishing_protection') }}">Phishing Protection</a>
+                        <a href="{{ url_for('port_scanner') }}">Port Scanner</a>
+                        <a href="{{ url_for('scan_file_route') }}">Antivirus Scanner</a>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="footer-contact">
+                    <h4>Contact Us</h4>
+                    <p style="font-size: 1.05rem;">Have questions or feedback? We're here to help!</p>
+                    <a href="mailto:support@phishguard.com"><i class="fas fa-envelope"></i> support@phishguard.com</a>
+                    <p class="mt-3 social-links">
+                        <a href="#" class="me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 NetDefender. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery first, then Bootstrap Bundle with Popper -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize dropdowns
+            var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'));
+            var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+                return new bootstrap.Dropdown(dropdownToggleEl);
+            });
+            
+            // Dark mode functionality
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            if (darkModeToggle) {
+                const html = document.documentElement;
+                const icon = darkModeToggle.querySelector('i');
+                
+                // Function to update theme
+                function updateTheme(isDark) {
+                    if (isDark) {
+                        html.setAttribute('data-bs-theme', 'dark');
+                        document.body.classList.add('dark-mode');
+                        icon.classList.remove('fa-moon');
+                        icon.classList.add('fa-sun');
+                        localStorage.setItem('theme', 'dark');
+                    } else {
+                        html.setAttribute('data-bs-theme', 'light');
+                        document.body.classList.remove('dark-mode');
+                        icon.classList.remove('fa-sun');
+                        icon.classList.add('fa-moon');
+                        localStorage.setItem('theme', 'light');
+                    }
+                }
+                
+                // Check for saved theme preference
+                const savedTheme = localStorage.getItem('theme') || 'dark';
+                updateTheme(savedTheme === 'dark');
+                
+                // Toggle theme
+                darkModeToggle.addEventListener('click', function() {
+                    const isDark = html.getAttribute('data-bs-theme') === 'light';
+                    updateTheme(isDark);
+                });
+            }
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

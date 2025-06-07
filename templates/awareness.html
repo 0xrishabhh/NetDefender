@@ -1,0 +1,871 @@
+{% extends "base.html" %}
+
+{% block title %}Cybersecurity Awareness - Cybersecurity Platform{% endblock %}
+
+{% block content %}
+<div class="awareness-container">
+    <!-- Sub Navigation -->
+    <div class="sub-nav-section">
+        <div class="sub-nav-container">
+            <a href="{{ url_for('dos_donts') }}" class="sub-nav-link">Do's & Don'ts</a>
+            <a href="{{ url_for('attacks') }}" class="sub-nav-link">Attacks</a>
+            <a href="{{ url_for('ppt') }}" class="sub-nav-link">Presentation</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Cybersecurity Awareness</h1>
+            <p class="hero-subtitle">Empowering you with knowledge to stay safe in the digital world</p>
+            
+            <!-- Quiz Section -->
+            <div id="quiz-section" class="quiz-section">
+                <div id="quiz-wrapper">
+                    <form id="cyber-quiz" class="quiz-form">
+                        <div class="quiz-questions-container">
+                            <div class="quiz-question">
+                                <p>1. Do you use unique passwords for each account?</p>
+                                <div class="radio-options">
+                                    <label><input type="radio" name="q1" value="yes"> Yes</label>
+                                    <label><input type="radio" name="q1" value="no" checked> No</label>
+                                </div>
+                            </div>
+                            <div class="quiz-question">
+                                <p>2. Is two-factor authentication (2FA) enabled on your accounts?</p>
+                                <div class="radio-options">
+                                    <label><input type="radio" name="q2" value="yes"> Yes</label>
+                                    <label><input type="radio" name="q2" value="no" checked> No</label>
+                                </div>
+                            </div>
+                            <div class="quiz-question">
+                                <p>3. Do you regularly update your passwords?</p>
+                                <div class="radio-options">
+                                    <label><input type="radio" name="q3" value="yes"> Yes</label>
+                                    <label><input type="radio" name="q3" value="no" checked> No</label>
+                                </div>
+                            </div>
+                            <div class="quiz-question">
+                                <p>4. Can you identify phishing emails?</p>
+                                <div class="radio-options">
+                                    <label><input type="radio" name="q4" value="yes"> Yes</label>
+                                    <label><input type="radio" name="q4" value="no" checked> No</label>
+                                </div>
+                            </div>
+                            <div class="quiz-question">
+                                <p>5. Do you verify email sender authenticity before clicking links?</p>
+                                <div class="radio-options">
+                                    <label><input type="radio" name="q5" value="yes"> Yes</label>
+                                    <label><input type="radio" name="q5" value="no" checked> No</label>
+                                </div>
+                            </div>
+                            <div class="quiz-question">
+                                <p>6. Do you avoid clicking suspicious links?</p>
+                                <div class="radio-options">
+                                    <label><input type="radio" name="q6" value="yes"> Yes</label>
+                                    <label><input type="radio" name="q6" value="no" checked> No</label>
+                                </div>
+                            </div>
+                            <div class="quiz-question">
+                                <p>7. Is your operating system kept up to date?</p>
+                                <div class="radio-options">
+                                    <label><input type="radio" name="q7" value="yes"> Yes</label>
+                                    <label><input type="radio" name="q7" value="no" checked> No</label>
+                                </div>
+                            </div>
+                            <div class="quiz-question">
+                                <p>8. Do you use antivirus software on your devices?</p>
+                                <div class="radio-options">
+                                    <label><input type="radio" name="q8" value="yes"> Yes</label>
+                                    <label><input type="radio" name="q8" value="no" checked> No</label>
+                                </div>
+                            </div>
+                            <div class="quiz-question">
+                                <p>9. Are your devices encrypted?</p>
+                                <div class="radio-options">
+                                    <label><input type="radio" name="q9" value="yes"> Yes</label>
+                                    <label><input type="radio" name="q9" value="no" checked> No</label>
+                                </div>
+                            </div>
+                            <div class="quiz-question">
+                                <p>10. Do you use a VPN on public Wi-Fi?</p>
+                                <div class="radio-options">
+                                    <label><input type="radio" name="q10" value="yes"> Yes</label>
+                                    <label><input type="radio" name="q10" value="no" checked> No</label>
+                                </div>
+                            </div>
+                            <div class="quiz-question">
+                                <p>11. Have you checked your privacy settings recently?</p>
+                                <div class="radio-options">
+                                    <label><input type="radio" name="q11" value="yes"> Yes</label>
+                                    <label><input type="radio" name="q11" value="no" checked> No</label>
+                                </div>
+                            </div>
+                            <div class="quiz-question">
+                                <p>12. Do you limit sharing personal information online?</p>
+                                <div class="radio-options">
+                                    <label><input type="radio" name="q12" value="yes"> Yes</label>
+                                    <label><input type="radio" name="q12" value="no" checked> No</label>
+                                </div>
+                            </div>
+                            <div class="quiz-question">
+                                <p>13. Do you use a password manager?</p>
+                                <div class="radio-options">
+                                    <label><input type="radio" name="q13" value="yes"> Yes</label>
+                                    <label><input type="radio" name="q13" value="no" checked> No</label>
+                                </div>
+                            </div>
+                            <div class="quiz-question">
+                                <p>14. Do you back up your data regularly?</p>
+                                <div class="radio-options">
+                                    <label><input type="radio" name="q14" value="yes"> Yes</label>
+                                    <label><input type="radio" name="q14" value="no" checked> No</label>
+                                </div>
+                            </div>
+                            <div class="quiz-question">
+                                <p>15. Are you cautious about downloading files from unknown sources?</p>
+                                <div class="radio-options">
+                                    <label><input type="radio" name="q15" value="yes"> Yes</label>
+                                    <label><input type="radio" name="q15" value="no" checked> No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Calculate My Score</button>
+                    </form>
+                    
+                    <div id="quiz-result" class="quiz-result" style="display: none;">
+                        <h3>Your Score: <span id="score"></span>/15</h3>
+                        <p id="feedback"></p>
+                        <div class="tips-container">
+                            <h4>Improvement Tips:</h4>
+                            <ul id="tips"></ul>
+                        </div>
+                        <button id="retest" class="btn btn-secondary">Take Quiz Again</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content-grid">
+        <!-- Key Topics Section -->
+        <div class="topics-section">
+            <div class="section-card">
+                <h2 class="section-title">Essential Security Topics</h2>
+                <div class="topics-grid">
+                    <!-- Password Security -->
+                    <div class="topic-card">
+                        <div class="topic-icon">🔒</div>
+                        <h3>Password Security</h3>
+                        <ul class="topic-list">
+                            <li>Use unique, complex passwords</li>
+                            <li>Enable two-factor authentication</li>
+                            <li>Regular password updates</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Email Safety -->
+                    <div class="topic-card">
+                        <div class="topic-icon">📧</div>
+                        <h3>Email Safety</h3>
+                        <ul class="topic-list">
+                            <li>Identify phishing attempts</li>
+                            <li>Verify sender authenticity</li>
+                            <li>Don't click suspicious links</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Device Security -->
+                    <div class="topic-card">
+                        <div class="topic-icon">📱</div>
+                        <h3>Device Security</h3>
+                        <ul class="topic-list">
+                            <li>Keep software updated</li>
+                            <li>Use antivirus protection</li>
+                            <li>Enable device encryption</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Online Privacy -->
+                    <div class="topic-card">
+                        <div class="topic-icon">🔐</div>
+                        <h3>Online Privacy</h3>
+                        <ul class="topic-list">
+                            <li>Use VPN on public Wi-Fi</li>
+                            <li>Check privacy settings</li>
+                            <li>Limit personal information sharing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Tips Section -->
+        <div class="tips-section">
+            <div class="section-card">
+                <h2 class="section-title">Quick Security Tips</h2>
+                <div class="tips-list">
+                    <div class="tip-item">
+                        <span class="tip-number">1</span>
+                        <p>Never share passwords or sensitive information via email</p>
+                    </div>
+                    <div class="tip-item">
+                        <span class="tip-number">2</span>
+                        <p>Use a password manager to generate and store strong passwords</p>
+                    </div>
+                    <div class="tip-item">
+                        <span class="tip-number">3</span>
+                        <p>Keep your operating system and software up to date</p>
+                    </div>
+                    <div class="tip-item">
+                        <span class="tip-number">4</span>
+                        <p>Back up your important data regularly</p>
+                    </div>
+                    <div class="tip-item">
+                        <span class="tip-number">5</span>
+                        <p>Be cautious when using public Wi-Fi networks</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.awareness-container {
+    min-height: 100vh;
+    background: #ffffff;
+    color: #2c3e50;
+    padding: 0;
+}
+
+.hero-section {
+    background: #ffffff;
+    padding: 4rem 2rem;
+    text-align: center;
+    position: relative;
+    color: #000000;
+    border: 2px solid #000000;
+    margin: 4rem;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+}
+
+.hero-section.active {
+    border-color: #3498db;
+    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.2);
+    background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+}
+
+.hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: #000000;
+    letter-spacing: -1px;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: #666666;
+    margin-bottom: 3rem;
+    font-weight: 400;
+}
+
+.content-grid {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+}
+
+.section-card {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    height: 100%;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.section-card.active {
+    border-color: #3498db;
+    box-shadow: 0 5px 30px rgba(52, 152, 219, 0.15);
+    background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+}
+
+.section-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #2c3e50;
+    position: relative;
+    padding-bottom: 1rem;
+    border-bottom: 3px solid #3498db;
+}
+
+.topics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.topic-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+}
+
+.topic-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    background: white;
+}
+
+.topic-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.topic-card h3 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.topic-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.topic-list li {
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+    position: relative;
+    color: #6c757d;
+}
+
+.topic-list li:before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: #3498db;
+}
+
+.tips-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.tip-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.tip-item:hover {
+    transform: translateX(5px);
+    background: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.tip-number {
+    background: #3498db;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.tip-item p {
+    margin: 0;
+    color: #6c757d;
+}
+
+/* Quiz Styles */
+#quiz-wrapper {
+    max-width: 800px;
+    margin: 2rem auto;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+#quiz-wrapper:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.quiz-form {
+    padding: 2.5rem;
+    background-color: #ffffff;
+    border-radius: 12px;
+}
+
+.quiz-questions-container {
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 15px;
+    margin-bottom: 20px;
+    scrollbar-width: thin;
+    scrollbar-color: #3498db #f8f9fa;
+}
+
+.quiz-questions-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.quiz-questions-container::-webkit-scrollbar-track {
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.quiz-questions-container::-webkit-scrollbar-thumb {
+    background-color: #3498db;
+    border-radius: 4px;
+}
+
+.quiz-question {
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.quiz-question:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+    border-color: #3498db;
+}
+
+.quiz-question p {
+    margin: 0 0 1rem;
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1.1rem;
+    line-height: 1.4;
+}
+
+.radio-options {
+    display: flex;
+    gap: 2rem;
+}
+
+.radio-options label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #555;
+    transition: all 0.2s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+}
+
+.radio-options label:hover {
+    color: #3498db;
+    background-color: rgba(52, 152, 219, 0.1);
+}
+
+.radio-options input[type="radio"] {
+    margin-right: 0.75rem;
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    accent-color: #3498db;
+}
+
+.btn-primary {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 2rem auto 0;
+    background-color: #3498db;
+    border: none;
+    color: white;
+    padding: 1rem 2rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+}
+
+.quiz-result {
+    padding: 3rem;
+    background-color: #ffffff;
+    border-radius: 12px;
+    text-align: center;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.quiz-result h3 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
+    font-weight: 700;
+}
+
+.quiz-result h4 {
+    font-size: 1.5rem;
+    margin: 2rem 0 1rem;
+    color: #2c3e50;
+    text-align: left;
+    font-weight: 600;
+}
+
+.quiz-result #feedback {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
+}
+
+.tips-container {
+    background-color: #f8f9fa;
+    padding: 2rem;
+    border-radius: 12px;
+    margin: 2rem 0;
+    border: 1px solid #e9ecef;
+}
+
+#tips {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+#tips li {
+    margin-bottom: 1rem;
+    padding: 1rem 1rem 1rem 2.5rem;
+    position: relative;
+    color: #555;
+    line-height: 1.5;
+    background-color: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+#tips li:hover {
+    transform: translateX(5px);
+    border-color: #3498db;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+#tips li:before {
+    content: '→';
+    position: absolute;
+    left: 1rem;
+    color: #3498db;
+    font-weight: bold;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border: none;
+    color: white;
+    padding: 1rem 2rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);
+}
+
+@media (max-width: 1200px) {
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 3rem 1.5rem;
+        margin: 2rem;
+        border-radius: 20px;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+    }
+
+    .content-grid {
+        padding: 2rem 1rem;
+    }
+    
+    .topics-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-card {
+        padding: 1.5rem;
+    }
+    
+    .quiz-container, #quiz-wrapper {
+        margin: 1rem;
+    }
+    
+    .radio-group, .radio-options {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .quiz-form {
+        padding: 1.5rem;
+    }
+    
+    .quiz-questions-container {
+        max-height: none;
+        overflow-y: visible;
+    }
+    
+    .quiz-question {
+        padding: 1.25rem;
+    }
+    
+    .quiz-question p {
+        font-size: 1rem;
+    }
+    
+    .quiz-result {
+        padding: 2rem;
+    }
+    
+    .quiz-result h3 {
+        font-size: 2rem;
+    }
+
+    .btn-primary, .btn-secondary {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+    }
+}
+</style>
+
+<script>
+// Simple troubleshooting script to ensure quiz is visible
+window.onload = function() {
+    // Make sure quiz questions are visible
+    const quizQuestionsContainer = document.querySelector('.quiz-questions-container');
+    if (quizQuestionsContainer) {
+        console.log("Quiz questions container found");
+        quizQuestionsContainer.style.display = 'block';
+        
+        // Check if questions are visible
+        const questions = document.querySelectorAll('.quiz-question');
+        console.log(`Found ${questions.length} questions`);
+        
+        // Make sure all questions are visible
+        questions.forEach((q, index) => {
+            q.style.display = 'block';
+            console.log(`Question ${index + 1} display set to block`);
+        });
+    } else {
+        console.error("Quiz questions container not found!");
+    }
+    
+    // Make sure form is visible
+    const quizForm = document.getElementById('cyber-quiz');
+    if (quizForm) {
+        console.log("Quiz form found");
+        quizForm.style.display = 'block';
+    }
+};
+
+// Initialize the quiz functionality when the document is ready
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOM fully loaded, initializing quiz...");
+    
+    const quizForm = document.getElementById('cyber-quiz');
+    const quizResult = document.getElementById('quiz-result');
+    const scoreDisplay = document.getElementById('score');
+    const feedbackDisplay = document.getElementById('feedback');
+    const tipsContainer = document.getElementById('tips');
+    const retestButton = document.getElementById('retest');
+    
+    if (quizForm) {
+        console.log("Quiz form found, attaching event listener");
+        
+        // Handle quiz submission
+        quizForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            console.log("Form submitted, calculating score...");
+            
+            // Calculate score
+            let score = 0;
+            const tips = [];
+            
+            // Tips for each question if answered 'No'
+            const tipsMap = [
+                "Use different passwords for each account and store them in a password manager.",
+                "Enable two-factor authentication for extra security.",
+                "Update passwords every 3-6 months to minimize risks.",
+                "Learn to recognize phishing emails by checking sender details and avoiding suspicious links.",
+                "Always verify email sender authenticity before clicking any links.",
+                "Be cautious with links from unknown sources or unexpected emails.",
+                "Keep your operating system updated to patch security vulnerabilities.",
+                "Install and regularly update antivirus software to protect against malware.",
+                "Enable device encryption to protect your data if your device is lost or stolen.",
+                "Use a VPN when connecting to public Wi-Fi to protect your data.",
+                "Regularly review and update your privacy settings on all accounts.",
+                "Be selective about what personal information you share online.",
+                "Use a password manager to generate and store strong, unique passwords.",
+                "Set up automatic backups to prevent data loss from hardware failure or ransomware.",
+                "Be cautious when downloading files from unknown sources to avoid malware."
+            ];
+            
+            // Iterate through all questions
+            for (let i = 1; i <= 15; i++) {
+                const questionName = 'q' + i;
+                const selectedOption = document.querySelector(`input[name="${questionName}"]:checked`);
+                
+                if (selectedOption && selectedOption.value === 'yes') {
+                    score++;
+                } else {
+                    // If answered 'No', add the corresponding tip
+                    tips.push(tipsMap[i-1]);
+                }
+            }
+            
+            console.log(`Score calculated: ${score}/15`);
+            
+            // Display score
+            scoreDisplay.textContent = score;
+            
+            // Provide feedback based on score
+            let feedback = '';
+            if (score >= 12) {
+                feedback = "Excellent! You have strong cybersecurity habits. Keep staying vigilant!";
+            } else if (score >= 8) {
+                feedback = "Good, but there's room for improvement. Focus on enabling 2FA, using a password manager, and staying alert for phishing attempts.";
+            } else if (score >= 4) {
+                feedback = "Moderate Risk. Consider strengthening your passwords, updating security settings, and using a VPN on public networks.";
+            } else {
+                feedback = "High Risk! You are vulnerable to cyber threats. Immediately improve by enabling 2FA, using unique passwords, and avoiding suspicious links.";
+            }
+            
+            feedbackDisplay.textContent = feedback;
+            
+            // Display tips for 'No' answers
+            tipsContainer.innerHTML = tips.map(tip => `<li>${tip}</li>`).join('');
+            
+            // Hide form and show results
+            quizForm.style.display = 'none';
+            quizResult.style.display = 'block';
+            
+            console.log("Results displayed");
+        });
+        
+        // Reset the quiz on 'Retest' button click
+        if (retestButton) {
+            retestButton.addEventListener('click', function() {
+                console.log("Retaking quiz...");
+                quizForm.reset();
+                quizResult.style.display = 'none';
+                quizForm.style.display = 'block';
+            });
+        }
+    } else {
+        console.error("Quiz form not found in DOM!");
+    }
+    
+    // Existing IntersectionObserver code for section highlighting
+    const sections = document.querySelectorAll('.hero-section, .section-card');
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.6
+    };
+
+    const observerCallback = (entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                sections.forEach(section => section.classList.remove('active'));
+                entry.target.classList.add('active');
+            }
+        });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    sections.forEach(section => observer.observe(section));
+
+    const setInitialActive = () => {
+        const viewportHeight = window.innerHeight;
+        sections.forEach(section => {
+            const rect = section.getBoundingClientRect();
+            const visible = (rect.top >= 0 && rect.top <= viewportHeight * 0.4);
+            if (visible) {
+                sections.forEach(s => s.classList.remove('active'));
+                section.classList.add('active');
+            }
+        });
+    };
+
+    setInitialActive();
+    window.addEventListener('scroll', setInitialActive);
+});
+</script>
+{% endblock %}

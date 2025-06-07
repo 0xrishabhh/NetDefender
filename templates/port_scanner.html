@@ -1,0 +1,569 @@
+{% extends "base.html" %}
+
+{% block title %}Port Scanner - Cybersecurity Platform{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="hero-section">
+        <h1>Network Port Scanner</h1>
+        <p class="hero-subtitle">Scan and analyze network ports for potential security vulnerabilities</p>
+    </div>
+
+    <div class="scanner-content">
+        <div class="info-card">
+            <h2>Port Scanner Information</h2>
+            <div class="info-content">
+                <p class="lead-text">
+                    Our port scanner helps you identify open ports and running services on your network. 
+                    This information is crucial for understanding potential security vulnerabilities and securing your system.
+                </p>
+                <div class="info-note">
+                    <i class="fas fa-info-circle"></i>
+                    <p>Choose the appropriate scan type based on your needs. Full scans may take longer but provide comprehensive results.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="scan-card">
+            <form id="scanForm" method="POST" action="/scan">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="target" class="form-label">Target Host</label>
+                        <input type="text" class="form-control" id="target" name="target" 
+                               value="localhost" required>
+                        <p class="input-help">Enter hostname or IP address</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="scan_type" class="form-label">Scan Type</label>
+                        <select class="form-select" id="scan_type" name="scan_type" required>
+                            <option value="common">Common Ports (Fast)</option>
+                            <option value="quick">Quick Scan (1-1024)</option>
+                            <option value="all">Full Scan (1-65535)</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                        <p id="scanTypeInfo" class="input-help">Scanning most common service ports</p>
+                    </div>
+
+                    <div class="form-group custom-range" style="display: none;">
+                        <label for="start_port" class="form-label">Start Port</label>
+                        <input type="number" class="form-control" id="start_port" name="start_port" 
+                               min="1" max="65535" value="1">
+                    </div>
+
+                    <div class="form-group custom-range" style="display: none;">
+                        <label for="end_port" class="form-label">End Port</label>
+                        <input type="number" class="form-control" id="end_port" name="end_port" 
+                               min="1" max="65535" value="1024">
+                    </div>
+                </div>
+
+                <button type="submit" class="scan-btn">
+                    <i class="fas fa-search"></i>
+                    Start Scan
+                </button>
+            </form>
+        </div>
+
+        <div class="loading">
+            <div class="loading-content">
+                <div class="spinner"></div>
+                <p>Scanning ports... Please wait.</p>
+                <small id="scanningInfo"></small>
+            </div>
+        </div>
+
+        <div id="results" class="results-section" style="display: none;">
+            <div class="results-grid">
+                <div class="system-card">
+                    <div class="card-header">
+                        <h3>System Information</h3>
+                    </div>
+                    <div class="card-body" id="systemInfo">
+                    </div>
+                </div>
+
+                <div class="ports-card">
+                    <div class="card-header">
+                        <h3>Open Ports</h3>
+                        <span class="port-count" id="portCount">0 ports found</span>
+                    </div>
+                    <div class="card-body scan-results">
+                        <div id="portList" class="port-grid">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.container {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: var(--section-padding);
+}
+
+.hero-section {
+    text-align: center;
+    padding: 4rem 0;
+    margin-bottom: 4rem;
+    background: var(--gray-100);
+    border-radius: 16px;
+    border: 1px solid var(--gray-200);
+}
+
+.hero-section h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    letter-spacing: -1px;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--gray-600);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.scanner-content {
+    display: grid;
+    gap: 2rem;
+}
+
+.info-card, .scan-card {
+    background: var(--gray-100);
+    border-radius: 16px;
+    padding: 2rem;
+    border: 1px solid var(--gray-200);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.info-card h2 {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--gray-200);
+}
+
+.lead-text {
+    font-size: 1.1rem;
+    color: var(--gray-700);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.info-note {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: var(--warning-bg);
+    border-left: 4px solid var(--warning-color);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.info-note i {
+    color: var(--warning-color);
+    font-size: 1.2rem;
+}
+
+.info-note p {
+    margin: 0;
+    color: var(--warning-text);
+    font-size: 0.95rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--gray-700);
+    font-weight: 500;
+}
+
+.form-control, .form-select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--gray-300);
+    border-radius: 8px;
+    background-color: var(--gray-100);
+    color: var(--gray-700);
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+    outline: none;
+}
+
+.input-help {
+    margin-top: 0.5rem;
+    color: var(--gray-600);
+    font-size: 0.9rem;
+}
+
+.scan-btn {
+    width: 100%;
+    padding: 1rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.scan-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.loading {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-content {
+    text-align: center;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid var(--gray-200);
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading p {
+    color: var(--gray-700);
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.loading small {
+    color: var(--gray-600);
+    font-size: 0.9rem;
+}
+
+.results-section {
+    margin-top: 2rem;
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+}
+
+.system-card, .ports-card {
+    background: var(--gray-100);
+    border-radius: 16px;
+    border: 1px solid var(--gray-200);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 1.5rem;
+    background: var(--gray-200);
+    border-bottom: 1px solid var(--gray-300);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-header h3 {
+    color: var(--primary-color);
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.port-count {
+    background: var(--primary-color);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.scan-results {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.port-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.port-card {
+    background: var(--gray-200);
+    border-radius: 12px;
+    padding: 1.2rem;
+    transition: all 0.2s ease;
+}
+
+.port-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.port-card h5 {
+    color: var(--primary-color);
+    margin: 0 0 0.8rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.port-card p {
+    margin: 0.5rem 0;
+    color: var(--gray-700);
+    font-size: 0.95rem;
+}
+
+.port-card .badge {
+    background: var(--success-color);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* Dark mode styles */
+[data-bs-theme="dark"] .hero-section,
+[data-bs-theme="dark"] .info-card,
+[data-bs-theme="dark"] .scan-card,
+[data-bs-theme="dark"] .system-card,
+[data-bs-theme="dark"] .ports-card {
+    background: var(--dark-card-bg);
+    border-color: var(--dark-border);
+}
+
+[data-bs-theme="dark"] .hero-section h1,
+[data-bs-theme="dark"] .info-card h2,
+[data-bs-theme="dark"] .card-header h3 {
+    color: var(--light-color);
+}
+
+[data-bs-theme="dark"] .hero-subtitle,
+[data-bs-theme="dark"] .lead-text,
+[data-bs-theme="dark"] .form-label,
+[data-bs-theme="dark"] .port-card h5 {
+    color: var(--dark-text-secondary);
+}
+
+[data-bs-theme="dark"] .form-control,
+[data-bs-theme="dark"] .form-select,
+[data-bs-theme="dark"] .port-card {
+    background: var(--dark-input-bg);
+    border-color: var(--dark-border);
+    color: var(--dark-text-primary);
+}
+
+[data-bs-theme="dark"] .card-header {
+    background: var(--dark-card-header);
+    border-color: var(--dark-border);
+}
+
+[data-bs-theme="dark"] .loading {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+/* Responsive styles */
+@media (max-width: 992px) {
+    .results-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .hero-section {
+        padding: 2rem 1rem;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .info-card, .scan-card, .system-card, .ports-card {
+        padding: 1.5rem;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const scanTypeDescriptions = {
+        'common': 'Scanning most common service ports (Fast)',
+        'quick': 'Scanning ports 1-1024 (Medium)',
+        'all': 'Scanning all ports 1-65535 (Slow)',
+        'custom': 'Custom port range scan'
+    };
+
+    document.getElementById('scan_type').addEventListener('change', function() {
+        const customRangeFields = document.querySelectorAll('.custom-range');
+        const isCustom = this.value === 'custom';
+        customRangeFields.forEach(field => {
+            field.style.display = isCustom ? 'block' : 'none';
+        });
+        
+        document.getElementById('scanTypeInfo').textContent = scanTypeDescriptions[this.value];
+        updateScanningInfo(this.value);
+    });
+
+    function updateScanningInfo(scanType) {
+        const scanningInfo = document.getElementById('scanningInfo');
+        switch(scanType) {
+            case 'common':
+                scanningInfo.textContent = 'Scanning common service ports...';
+                break;
+            case 'quick':
+                scanningInfo.textContent = 'Quick scan in progress (1-1024)...';
+                break;
+            case 'all':
+                scanningInfo.textContent = 'Full port scan in progress (1-65535). This may take a while...';
+                break;
+            case 'custom':
+                scanningInfo.textContent = 'Scanning custom port range...';
+                break;
+        }
+    }
+
+    document.getElementById('scanForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const form = e.target;
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        
+        document.querySelector('.loading').style.display = 'flex';
+        document.getElementById('results').style.display = 'none';
+        
+        updateScanningInfo(data.scan_type);
+        
+        try {
+            const response = await fetch('/scan', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+            
+            const result = await response.json();
+            displayResults(result);
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred during the scan.');
+        } finally {
+            document.querySelector('.loading').style.display = 'none';
+        }
+    });
+
+    function displayResults(data) {
+        const results = document.getElementById('results');
+        const portList = document.getElementById('portList');
+        const systemInfo = document.getElementById('systemInfo');
+        const portCount = document.getElementById('portCount');
+        
+        portList.innerHTML = '';
+        systemInfo.innerHTML = '';
+        
+        const sysInfo = data.system_info;
+        systemInfo.innerHTML = `
+            <p><strong>OS:</strong> ${sysInfo.os} ${sysInfo.os_version}</p>
+            <p><strong>Machine:</strong> ${sysInfo.machine}</p>
+            <p><strong>Hostname:</strong> ${sysInfo.hostname}</p>
+            <p><strong>IP Address:</strong> ${sysInfo.ip_address}</p>
+            <p><strong>CPU Cores:</strong> ${sysInfo.cpu_cores}</p>
+            <p><strong>Memory:</strong> ${formatBytes(sysInfo.memory_total)} total<br>
+            ${formatBytes(sysInfo.memory_available)} available</p>
+        `;
+
+        if (data.scan_results && data.scan_results.length > 0) {
+            portCount.textContent = `${data.scan_results.length} ports found`;
+            
+            data.scan_results.forEach(port => {
+                const portCard = document.createElement('div');
+                portCard.className = 'port-card';
+                portCard.innerHTML = `
+                    <h5>Port ${port.port}</h5>
+                    <p><strong>Service:</strong> ${port.service}</p>
+                    <p><strong>Status:</strong> <span class="badge">${port.status}</span></p>
+                `;
+                portList.appendChild(portCard);
+            });
+        } else {
+            portCount.textContent = 'No open ports found';
+            portList.innerHTML = '<div class="alert alert-info">No open ports were found during the scan.</div>';
+        }
+        
+        results.style.display = 'block';
+    }
+
+    function formatBytes(bytes) {
+        const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+        let i = 0;
+        while (bytes >= 1024 && i < units.length - 1) {
+            bytes /= 1024;
+            i++;
+        }
+        return `${bytes.toFixed(2)} ${units[i]}`;
+    }
+
+    document.getElementById('scanTypeInfo').textContent = scanTypeDescriptions['common'];
+});
+</script>
+{% endblock %} 

@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}Verify OTP - Cybersecurity Platform{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow">
+            <div class="card-body p-5">
+                <h2 class="text-center mb-4">Verify OTP</h2>
+                <p class="text-center mb-4">
+                    We've sent a verification code to your 
+                    {% if verification_method == 'whatsapp' %}
+                        WhatsApp number
+                    {% else %}
+                        email address
+                    {% endif %}. 
+                    Please enter it below.
+                </p>
+                
+                <form method="POST" action="{{ url_for('verify_otp') }}" id="otpForm" novalidate>
+                    <input type="hidden" name="email" value="{{ email }}">
+                    <div class="mb-4">
+                        <label for="otp" class="form-label">Enter OTP</label>
+                        <input type="text" class="form-control form-control-lg text-center" 
+                               id="otp" name="otp" 
+                               pattern="[0-9]{6}"
+                               maxlength="6"
+                               required
+                               autocomplete="off">
+                        <div class="invalid-feedback">
+                            Please enter the 6-digit OTP
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">Verify OTP</button>
+                        <button type="button" class="btn btn-link" id="resendOtp">Resend OTP</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const otpInput = document.getElementById('otp');
+    const resendButton = document.getElementById('resendOtp');
+    let resendTimeout = 30; // 30 seconds timeout for resend
+
+    // Format OTP input
+    otpInput.addEventListener('input', function() {
+        this.value = this.value.replace(/\D/g, '').slice(0, 6);
+    });
+
+    // Handle resend OTP
+    resendButton.addEventListener('click', function() {
+        if (this.disabled) return;
+        
+        this.disabled = true;
+        this.textContent = `Resend OTP in ${resendTimeout}s`;
+        
+        const countdown = setInterval(() => {
+            resendTimeout--;
+            this.textContent = `Resend OTP in ${resendTimeout}s`;
+            
+            if (resendTimeout <= 0) {
+                clearInterval(countdown);
+                this.disabled = false;
+                this.textContent = 'Resend OTP';
+                resendTimeout = 30;
+            }
+        }, 1000);
+
+        // Send resend request
+        fetch("{{ url_for('resend_otp') }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: "{{ email }}",
+                verification_method: "{{ verification_method }}"
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Show success message
+                const alert = document.createElement('div');
+                alert.className = 'alert alert-success mt-3';
+                alert.textContent = data.message;
+                document.querySelector('.card-body').insertBefore(alert, document.getElementById('otpForm'));
+                setTimeout(() => alert.remove(), 5000);
+            } else {
+                // Show error message
+                const alert = document.createElement('div');
+                alert.className = 'alert alert-danger mt-3';
+                alert.textContent = data.message || 'Failed to resend OTP';
+                document.querySelector('.card-body').insertBefore(alert, document.getElementById('otpForm'));
+                setTimeout(() => alert.remove(), 5000);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            const alert = document.createElement('div');
+            alert.className = 'alert alert-danger mt-3';
+            alert.textContent = 'An error occurred while resending OTP';
+            document.querySelector('.card-body').insertBefore(alert, document.getElementById('otpForm'));
+            setTimeout(() => alert.remove(), 5000);
+        });
+    });
+});
+</script>
+{% endblock %} 

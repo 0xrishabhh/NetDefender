@@ -1,0 +1,378 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome to NetDefender{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="cyber-grid"></div>
+    <div class="hero-content">
+        <h1 id="NetDefender" class="hacker-text">NETDEFENDER</h1>
+        <p class="subtitle">The Web Wasn't Built for Safety — We Are.</p>
+        <div class="cta-buttons">
+            <a href="{{ url_for('awareness') }}" class="cyber-button primary-btn">
+                Learn More
+            </a>
+            <a href="{{ url_for('phishing_protection') }}" class="cyber-button secondary-btn">
+                Get Protected
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="features-section">
+    <div class="feature-card">
+        <div class="icon"><i class="fas fa-shield-alt"></i></div>
+        <h3>Advanced Protection</h3>
+        <p>State-of-the-art security measures to keep you safe online</p>
+    </div>
+    <div class="feature-card">
+        <div class="icon"><i class="fas fa-radar"></i></div>
+        <h3>Real-time Defense</h3>
+        <p>Continuous monitoring and instant threat detection</p>
+    </div>
+    <div class="feature-card">
+        <div class="icon"><i class="fas fa-network-wired"></i></div>
+        <h3>Multi-platform</h3>
+        <p>Protect all your devices with our comprehensive solution</p>
+    </div>
+</div>
+
+<style>
+.hero-section {
+    min-height: 90vh;
+    background: var(--cyber-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.cyber-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(90deg, var(--cyber-text) 1px, transparent 1px) 0 0 / 50px 50px,
+        linear-gradient(0deg, var(--cyber-text) 1px, transparent 1px) 0 0 / 50px 50px;
+    opacity: 0.1;
+    animation: grid-animation 20s linear infinite;
+    pointer-events: none;
+}
+
+.hero-content {
+    text-align: center;
+    max-width: 800px;
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.hacker-text {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 5rem;
+    color: #00ff00;
+    margin-bottom: 1.5rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    width: 100%;
+}
+
+.hacker-text span {
+    display: inline-block;
+    padding: 0 2px;
+    transition: all 0.1s ease;
+    opacity: 0.7;
+    position: relative;
+}
+
+.hacker-text span.glow {
+    color: #00ff00;
+    opacity: 1;
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    color: var(--cyber-text);
+    margin-bottom: 3rem;
+    line-height: 1.6;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.8;
+    text-align: center;
+    width: 100%;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    width: 100%;
+}
+
+.cyber-button {
+    --primary: var(--cyber-text);
+    --shadow-primary: var(--secondary-color);
+    --primary-hue: 180;
+    --primary-lightness: 50;
+    --color: var(--cyber-bg);
+    --font-size: 1rem;
+    --shadow-primary-hue: 300;
+    --label-size: 0.8rem;
+    --clip: polygon(0 0, 100% 0, 100% 100%, 95% 100%, 95% 90%, 85% 90%, 85% 100%, 8% 100%, 0 70%);
+    --border: 4px;
+    --shimmy-distance: 5;
+    --clip-one: polygon(0 2%, 100% 2%, 100% 95%, 95% 95%, 95% 90%, 85% 90%, 85% 95%, 8% 95%, 0 70%);
+    --clip-two: polygon(0 78%, 100% 78%, 100% 100%, 95% 100%, 95% 90%, 85% 90%, 85% 100%, 8% 100%, 0 78%);
+    --clip-three: polygon(0 44%, 100% 44%, 100% 54%, 95% 54%, 95% 54%, 85% 54%, 85% 54%, 8% 54%, 0 54%);
+    --clip-four: polygon(0 0, 100% 0, 100% 0, 95% 0, 95% 0, 85% 0, 85% 0, 8% 0, 0 0);
+    --clip-five: polygon(0 0, 100% 0, 100% 0, 95% 0, 95% 0, 85% 0, 85% 0, 8% 0, 0 0);
+    --clip-six: polygon(0 40%, 100% 40%, 100% 85%, 95% 85%, 95% 85%, 85% 85%, 85% 85%, 8% 85%, 0 70%);
+    --clip-seven: polygon(0 63%, 100% 63%, 100% 80%, 95% 80%, 95% 80%, 85% 80%, 85% 80%, 8% 80%, 0 70%);
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--color);
+    cursor: pointer;
+    background: var(--cyber-bg);
+    text-transform: uppercase;
+    font-size: var(--font-size);
+    outline: transparent;
+    letter-spacing: 2px;
+    position: relative;
+    font-weight: 700;
+    border: 2px solid #fffbe6;
+    box-shadow: 0 0 10px #fffbe644;
+    min-width: 200px;
+    height: 50px;
+    line-height: 50px;
+    transition: background 0.2s;
+    text-decoration: none;
+    text-align: center;
+    overflow: hidden;
+}
+
+.cyber-button:hover {
+    background: #fffbe622;
+    color: #222;
+    border-color: #f5e9c6;
+}
+
+.cyber-button__tag {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: var(--shadow-primary);
+    color: var(--cyber-bg);
+    font-size: var(--label-size);
+    padding: 2px 4px;
+    transform: translateY(-100%);
+}
+
+.cyber-button__glitch {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--primary);
+    filter: drop-shadow(0 0 2px var(--primary));
+    clip-path: var(--clip);
+    transform: translate(0);
+    transition: transform 0.2s;
+}
+
+.cyber-button:hover .cyber-button__glitch {
+    transform: translate(var(--shimmy-distance), 0);
+}
+
+.features-section {
+    background: var(--cyber-bg);
+    padding: 6rem 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.features-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(45deg, transparent 48%, var(--cyber-text) 49%, transparent 51%),
+        linear-gradient(-45deg, transparent 48%, var(--cyber-text) 49%, transparent 51%);
+    background-size: 30px 30px;
+    opacity: 0.05;
+    pointer-events: none;
+}
+
+.feature-card {
+    padding: 2rem;
+    border: 1.5px solid var(--border-color);
+    background: var(--bg-color);
+    color: var(--text-color);
+    box-shadow: 0 4px 24px 0 rgba(0,0,0,0.08);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 48%, var(--cyber-text) 49%, transparent 51%);
+    background-size: 20px 20px;
+    opacity: 0.05;
+    pointer-events: none;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px var(--cyber-text);
+}
+
+.feature-card .icon {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    text-shadow: 0 0 10px var(--primary-color);
+}
+
+.feature-card h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.feature-card p {
+    color: var(--text-color);
+    line-height: 1.6;
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .hacker-text {
+        font-size: 3rem;
+        letter-spacing: 2px;
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+        letter-spacing: 1px;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cyber-button {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .features-section {
+        padding: 4rem 1.5rem;
+    }
+}
+
+/* Ensure the grid doesn't interfere with interactions */
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".split("");
+    let letterCount = 0;
+    const el = $("#NetDefender");
+    const word = "NETDEFENDER";
+    let finished = false;
+
+    // Clear and prepare the element
+    el.empty();
+    for (let i = 0; i < word.length; i++) {
+        el.append($("<span>").text(word[i]));
+    }
+
+    const spans = el.find("span");
+
+    function write() {
+        if (finished) return;
+        
+        for (let i = letterCount; i < word.length; i++) {
+            const c = Math.floor(Math.random() * alphabet.length);
+            spans.eq(i).text(alphabet[c]);
+        }
+        requestAnimationFrame(write);
+    }
+
+    function inc() {
+        if (letterCount < word.length) {
+            spans.eq(letterCount).text(word[letterCount]).addClass("glow");
+            letterCount++;
+            
+            if (letterCount < word.length) {
+                setTimeout(inc, 100);
+            } else {
+                finished = true;
+                setTimeout(reset, 2000);
+            }
+        }
+    }
+
+    function reset() {
+        letterCount = 0;
+        finished = false;
+        spans.removeClass("glow");
+        setTimeout(() => {
+            write();
+            inc();
+        }, 500);
+    }
+
+    // Start the animation
+    write();
+    setTimeout(inc, 1000);
+
+    // Click to restart
+    el.on("click", function() {
+        if (finished) {
+            reset();
+        }
+    });
+});
+</script>
+{% endblock %}

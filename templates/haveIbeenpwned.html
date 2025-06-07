@@ -1,0 +1,262 @@
+{% extends "base.html" %}
+
+{% block title %}Have I Been Pwned - Password Checker{% endblock %}
+
+{% block extra_css %}
+<style>
+    .pwned-checker {
+        background: var(--bg-color);
+        border: 1.5px solid var(--primary-color);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 4px 24px 0 rgba(0,0,0,0.08);
+        margin-bottom: 2rem;
+        margin: 2rem auto;
+        max-width: 1200px;
+    }
+
+    .pwned-checker h1 {
+        color: var(--primary-color);
+        font-family: 'Orbitron', sans-serif;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-shadow: 0 0 12px var(--primary-color);
+        font-size: 2.5rem;
+        font-weight: 900;
+        opacity: 0.95;
+    }
+
+    .pwned-checker p {
+        color: var(--text-color);
+        margin-bottom: 1.5rem;
+        text-align: center;
+        font-size: 1.15rem;
+        opacity: 0.85;
+    }
+
+    .password-form {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .form-control {
+        background: rgba(10, 10, 10, 0.8);
+        border: 1px solid var(--cyber-text);
+        color: var(--cyber-text);
+        font-family: 'Share Tech Mono', monospace;
+        padding: 0.8rem;
+        margin-bottom: 1rem;
+    }
+
+    .form-control:focus {
+        background: rgba(10, 10, 10, 0.9);
+        border-color: var(--secondary-color);
+        box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+        color: var(--cyber-text);
+    }
+
+    .btn-check {
+        background: transparent;
+        border: 1px solid var(--cyber-text);
+        color: var(--cyber-text);
+        font-family: 'Share Tech Mono', monospace;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        padding: 0.8rem 2rem;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+
+    .btn-check:hover {
+        background: var(--cyber-text);
+        color: var(--cyber-bg);
+        box-shadow: var(--cyber-glow);
+    }
+
+    .result-section {
+        margin-top: 2rem;
+        text-align: center;
+    }
+
+    .result-box {
+        padding: 2rem;
+        border-radius: 10px;
+        margin-top: 1.5rem;
+    }
+
+    .result-box.pwned {
+        background-color: rgba(139, 0, 0, 0.7);
+        border: 1px solid #ff0055;
+    }
+
+    .result-box.safe {
+        background-color: rgba(0, 100, 0, 0.7);
+        border: 1px solid #00ff9d;
+    }
+
+    .result-box h2 {
+        font-family: 'Orbitron', sans-serif;
+        margin-bottom: 1rem;
+    }
+
+    .result-box .count {
+        font-size: 1.5rem;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 0.8rem 1.5rem;
+        border-radius: 8px;
+        margin: 1.5rem 0;
+        display: inline-block;
+    }
+
+    .security-steps {
+        background: rgba(10, 10, 10, 0.8);
+        border: 1px solid var(--cyber-text);
+        border-radius: 10px;
+        padding: 2rem;
+        margin-top: 2rem;
+    }
+
+    .security-steps h2 {
+        color: var(--cyber-text);
+        font-family: 'Orbitron', sans-serif;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    .steps-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .step {
+        background: rgba(10, 10, 10, 0.9);
+        padding: 1.5rem;
+        border-radius: 8px;
+        border: 1px solid var(--cyber-text);
+        transition: transform 0.3s ease;
+    }
+
+    .step:hover {
+        transform: translateY(-5px);
+    }
+
+    .step h3 {
+        color: var(--secondary-color);
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+    }
+
+    .step p {
+        color: var(--cyber-text);
+        margin-bottom: 0;
+    }
+
+    .feature-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .feature-card {
+        background: transparent;
+        padding: 1.7rem 1.5rem 1.5rem 1.5rem;
+        border-radius: 14px;
+        border: 1.5px solid var(--primary-color);
+        box-shadow: 0 4px 24px 0 rgba(0,0,0,0.08);
+        transition: transform 0.3s, box-shadow 0.3s;
+        text-align: left;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px) scale(1.03);
+        box-shadow: 0 0 24px var(--primary-color);
+    }
+
+    .feature-card h3 {
+        color: var(--secondary-color);
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        letter-spacing: 2px;
+        text-shadow: 0 0 10px var(--secondary-color);
+        text-transform: uppercase;
+    }
+
+    .feature-card p {
+        color: var(--text-color);
+        font-size: 1.08rem;
+        opacity: 0.85;
+        margin-bottom: 0;
+        font-family: 'Share Tech Mono', monospace;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="pwned-checker">
+    <h1>Have I Been Pwned - Password Checker</h1>
+    <p>
+        Pwned Passwords are hundreds of millions of real world passwords previously exposed in data breaches. 
+        This exposure makes them unsuitable for ongoing use as they're at much greater risk of being used to 
+        take over other accounts. They're searchable online below as well as being downloadable for use in 
+        other online systems.
+    </p>
+
+    <div class="password-form">
+        <form action="{{ url_for('haveibeenpwned') }}" method="POST">
+            <div class="mb-3">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            <button type="submit" class="btn btn-check">
+                <i class="fas fa-search"></i> Check Password
+            </button>
+        </form>
+    </div>
+
+    {% if result %}
+    <div class="result-section">
+        <div class="result-box {% if is_pwned %}pwned{% else %}safe{% endif %}">
+            {% if is_pwned %}
+                <h2>Oh no — pwned!</h2>
+                <div class="count">
+                    This password has been seen {{ "{:,}".format(count) }} times before
+                </div>
+                <p>
+                    This password has previously appeared in a data breach and should never be used. 
+                    If you've ever used it anywhere before, change it!
+                </p>
+            {% else %}
+                <h2>Good news — no pwnage found!</h2>
+                <p>
+                    This password wasn't found in any known data breaches. 
+                    Still, it's a good idea to use unique passwords for all your accounts.
+                </p>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="feature-cards">
+        <div class="feature-card">
+            <h3>Privacy First</h3>
+            <p>Your password is never sent to our servers. We use k-Anonymity to check if your password has been exposed in data breaches.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Real-time Updates</h3>
+            <p>Our database is constantly updated with new password breaches to ensure you have the most current information.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Free Service</h3>
+            <p>This service is completely free to use and helps you maintain better password security practices.</p>
+        </div>
+    </div>
+</div>
+{% endblock %} 

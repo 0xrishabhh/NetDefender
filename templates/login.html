@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Cybersecurity Platform{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-card card">
+        <div class="card-body">
+            <h2 class="text-center">Welcome Back</h2>
+            <form method="POST" action="{{ url_for('login') }}" id="loginForm" novalidate>
+                <div class="mb-4">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="email" name="email" 
+                           pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                           placeholder="Enter your email"
+                           required>
+                    <div class="invalid-feedback">
+                        Please enter a valid email address
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" 
+                           placeholder="Enter your password"
+                           required>
+                    <div class="invalid-feedback">
+                        Please enter your password
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Verification Method</label>
+                    <div class="d-flex flex-column gap-2">
+                        <div class="verification-option">
+                            <input type="radio" class="btn-check" name="verification_method" id="whatsapp" value="whatsapp" autocomplete="off" checked>
+                            <label class="btn btn-outline-primary w-100" for="whatsapp">
+                                <i class="fab fa-whatsapp me-2"></i>WhatsApp
+                            </label>
+                        </div>
+                        <div class="verification-option">
+                            <input type="radio" class="btn-check" name="verification_method" id="email-verify" value="email" autocomplete="off">
+                            <label class="btn btn-outline-primary w-100" for="email-verify">
+                                <i class="fas fa-envelope me-2"></i>Email
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-text mt-2">
+                        Choose how you want to receive your verification code
+                    </div>
+                </div>
+                <div class="d-grid gap-3">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                    </button>
+                    <div class="text-center">
+                        <span class="text-muted">OR</span>
+                    </div>
+                    <a href="{{ url_for('google.login') }}" class="btn btn-outline-dark">
+                        <img src="{{ url_for('static', filename='images/google-icon.svg') }}" alt="Google" width="20" height="20" class="me-2">
+                        Sign in with Google
+                    </a>
+                </div>
+            </form>
+            <div class="text-center mt-4">
+                <p class="mb-0">Don't have an account? <a href="{{ url_for('signup') }}">Sign up</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const loginForm = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const verificationOptions = document.querySelectorAll('input[name="verification_method"]');
+
+    // Form validation
+    loginForm.addEventListener('submit', function(event) {
+        if (!this.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        this.classList.add('was-validated');
+    });
+
+    // Email validation
+    emailInput.addEventListener('input', function() {
+        if (this.value.indexOf('@') === -1) {
+            this.setCustomValidity('Email must contain @');
+        } else if (!this.value.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/)) {
+            this.setCustomValidity('Please enter a valid email address');
+        } else {
+            this.setCustomValidity('');
+        }
+    });
+
+    // Ensure radio buttons work properly
+    verificationOptions.forEach(option => {
+        option.addEventListener('change', function() {
+            verificationOptions.forEach(opt => {
+                const label = document.querySelector(`label[for="${opt.id}"]`);
+                if (opt.checked) {
+                    label.classList.add('active');
+                } else {
+                    label.classList.remove('active');
+                }
+            });
+        });
+    });
+});
+</script>
+{% endblock %} 

@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up - Cybersecurity Platform{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow">
+            <div class="card-body p-5">
+                <h2 class="text-center mb-4">Create Account</h2>
+                <form method="POST" action="{{ url_for('signup') }}" id="signupForm" novalidate>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="email" name="email" 
+                               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                               required>
+                        <div class="invalid-feedback">
+                            Please enter a valid email address (e.g., user@example.com)
+                        </div>
+                        <div class="form-text">We'll never share your email with anyone else.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="phone" name="phone" 
+                               pattern="[0-9]{10,15}"
+                               placeholder="Enter with country code (e.g., 911234567890)"
+                               required>
+                        <div class="invalid-feedback">
+                            Please enter a valid phone number with country code
+                        </div>
+                        <div class="form-text">Enter your phone number with country code for WhatsApp OTP verification</div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                        <div class="invalid-feedback">
+                            Please enter a password
+                        </div>
+                        <div class="password-strength mt-2">
+                            <div class="progress" style="height: 5px;">
+                                <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <small class="strength-text text-muted mt-1">Password strength: Not entered</small>
+                        </div>
+                        <div class="form-text mt-2">
+                            Password requirements:
+                            <ul class="mb-0 ps-3">
+                                <li id="length-check">❌ At least 8 characters</li>
+                                <li id="uppercase-check">❌ At least one uppercase letter</li>
+                                <li id="lowercase-check">❌ At least one lowercase letter</li>
+                                <li id="number-check">❌ At least one number</li>
+                                <li id="special-check">❌ At least one special character</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Sign Up</button>
+                    </div>
+                </form>
+                <div class="text-center mt-4">
+                    <p class="mb-0">Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Email validation
+document.getElementById('email').addEventListener('input', function() {
+    if (this.value.indexOf('@') === -1) {
+        this.setCustomValidity('Email must contain @');
+    } else if (!this.value.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/)) {
+        this.setCustomValidity('Please enter a valid email address');
+    } else {
+        this.setCustomValidity('');
+    }
+});
+
+// Phone number validation
+document.getElementById('phone').addEventListener('input', function() {
+    const phoneNumber = this.value.replace(/\D/g, '');
+    if (phoneNumber.length < 10 || phoneNumber.length > 15) {
+        this.setCustomValidity('Phone number must be between 10 and 15 digits');
+    } else {
+        this.setCustomValidity('');
+    }
+});
+
+// Password strength checker
+const password = document.getElementById('password');
+const submitBtn = document.getElementById('submitBtn');
+const progressBar = document.querySelector('.progress-bar');
+const strengthText = document.querySelector('.strength-text');
+
+const checks = {
+    length: str => str.length >= 8,
+    uppercase: str => /[A-Z]/.test(str),
+    lowercase: str => /[a-z]/.test(str),
+    number: str => /[0-9]/.test(str),
+    special: str => /[^A-Za-z0-9]/.test(str)
+};
+
+password.addEventListener('input', function() {
+    const value = this.value;
+    let strength = 0;
+    let passedChecks = 0;
+    
+    // Update check marks
+    for (const [check, testFn] of Object.entries(checks)) {
+        const passed = testFn(value);
+        const element = document.getElementById(`${check}-check`);
+        element.innerHTML = passed ? 
+            `✅ ${element.textContent.substring(2)}` : 
+            `❌ ${element.textContent.substring(2)}`;
+        if (passed) passedChecks++;
+    }
+    
+    // Calculate strength
+    strength = (passedChecks / Object.keys(checks).length) * 100;
+    
+    // Update UI
+    progressBar.style.width = `${strength}%`;
+    if (strength <= 20) {
+        progressBar.className = 'progress-bar bg-danger';
+        strengthText.textContent = 'Password strength: Very Weak';
+    } else if (strength <= 40) {
+        progressBar.className = 'progress-bar bg-warning';
+        strengthText.textContent = 'Password strength: Weak';
+    } else if (strength <= 60) {
+        progressBar.className = 'progress-bar bg-info';
+        strengthText.textContent = 'Password strength: Medium';
+    } else if (strength <= 80) {
+        progressBar.className = 'progress-bar bg-primary';
+        strengthText.textContent = 'Password strength: Strong';
+    } else {
+        progressBar.className = 'progress-bar bg-success';
+        strengthText.textContent = 'Password strength: Very Strong';
+    }
+    
+    // Enable/disable submit button
+    submitBtn.disabled = strength < 60; // Require at least medium strength
+});
+
+// Form validation
+document.getElementById('signupForm').addEventListener('submit', function(event) {
+    if (!this.checkValidity() || submitBtn.disabled) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    this.classList.add('was-validated');
+});
+</script>
+{% endblock %} 
