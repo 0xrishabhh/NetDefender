@@ -12,8 +12,8 @@ load_dotenv()
 # Email configuration
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 465  # Using SSL port instead of TLS
-EMAIL_USER = 'teamcyber175@gmail.com'
-EMAIL_PASSWORD = 'ofuk dyuu aoms gbgw'  # Google App Password
+EMAIL_USER = 'Replace this wit your email'
+EMAIL_PASSWORD = 'enter app passwd'  # Google App Password
 
 def load_wordlist(file_path):
     """Load a wordlist from file."""
