@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M39,14v26c0,1.1-0.9,2-2,2H11c-1.1,0-2-0.9-2-2V8c0-1.1,0.9-2,2-2h20l8,8z" fill="#FF5252"/>
+        <path d="M37.1,14H31V7.9L37.1,14z" fill="#E53935"/>
+        <path d="M24,23c-0.3,0-0.5-0.1-0.7-0.3l-3-3c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l2.3,2.3l5.3-5.3
+        c0.4-0.4,1-0.4,1.4,0s0.4,1,0,1.4l-6,6C24.5,22.9,24.3,23,24,23z" fill="white"/>
+        <text x="15" y="38" font-family="Arial" font-size="12" fill="white">PDF</text>
+    </g>
+</svg> 
